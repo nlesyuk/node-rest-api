@@ -40,15 +40,14 @@ createUsersTable();
 // SERVER
 const app = express();
 const router = express.Router();
-
+// config
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json({
     strict: false
 }));
-app.use(router);
 app.use(cors('http://localhost:8080'));
 
-// route that accepts a POST request.
+// routes
 router.post('/register', (req, res) => {
     // res.status(200).send({ access_token: '' })
     console.log(`Server /register`);
@@ -83,11 +82,6 @@ router.post('/register', (req, res) => {
     })
 });
 router.post('/login', (req, res) => {
-    // res.status(200).send({ access_token: '' })
-    console.log(req.headers)
-    res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
-    // res.set('Access-Control-Allow-Headers', 'Origin, X-Requested With, Content-Type, Accept');
     const email = req.body.email;
     const password = req.body.password;
 
@@ -118,10 +112,11 @@ router.get('/', (req, res) => {
     res.status(200).send('This is auth server')
 });
 
+// apply configs
+app.use(router);
 
-const port = process.env.PORT || 3000;
-
-const server = app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+// run server
+const server = app.listen(3000, () => {
+    console.log(`Server listening at http://localhost:3000`);
 });
 
