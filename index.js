@@ -2,6 +2,7 @@
 // server 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 // db
 const sqlite3 = require('sqlite3').verbose();
 const database = new sqlite3.Database('./my.db');
@@ -44,6 +45,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json({
     strict: false
 }));
+app.use(router);
+app.use(cors('http://localhost:8080'));
 
 // route that accepts a POST request.
 router.post('/register', (req, res) => {
@@ -81,6 +84,10 @@ router.post('/register', (req, res) => {
 });
 router.post('/login', (req, res) => {
     // res.status(200).send({ access_token: '' })
+    console.log(req.headers)
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
+    // res.set('Access-Control-Allow-Headers', 'Origin, X-Requested With, Content-Type, Accept');
     const email = req.body.email;
     const password = req.body.password;
 
@@ -112,8 +119,8 @@ router.get('/', (req, res) => {
 });
 
 
-app.use(router);
 const port = process.env.PORT || 3000;
+
 const server = app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
 });
